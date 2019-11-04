@@ -41,6 +41,12 @@
             <artifactId>druid</artifactId>
         </dependency>
 
+        <!--通用Mapper-->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou-pojo</artifactId>
