@@ -27,4 +27,17 @@ app.controller('baseController',function ($scope) {
             $scope.selectIds.splice(idx, 1);//删除
         }
     }
+
+    $scope.jsonToString = function (jsonToString,key) {
+        var json = JSON.parse(jsonToString);
+        var value = "";
+        for (var i = 0; i < json.length; i++){
+            if (i > 0){
+                value  += ",";
+            }
+            value += json[i][key];
+        }
+        return value;
+    }
+
 })
