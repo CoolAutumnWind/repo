@@ -75,16 +75,18 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 			}			
 		);
 	}
-    
-	$scope.updateStatus=function (sellerId,status) {
-		sellerService.updateStatus(sellerId,status).success(
+
+	// 保存
+	$scope.add = function () {
+		sellerService.add($scope.entity).success(
 			function (response) {
 				if (response.success){
-					$scope.reloadList();//刷新列表
+					location.href='shoplogin.html';
 				}else{
 					alert(response.message);
 				}
 			}
 		)
 	}
+
 });	
