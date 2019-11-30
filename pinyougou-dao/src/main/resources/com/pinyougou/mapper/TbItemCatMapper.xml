@@ -173,7 +173,7 @@
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.pinyougou.pojo.TbItemCat" >
     update tb_item_cat
-    <set >
+    <set>
       <if test="parentId != null" >
         parent_id = #{parentId,jdbcType=BIGINT},
       </if>
@@ -193,4 +193,8 @@
       type_id = #{typeId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="findParentIdIsNotNull" resultType="java.lang.Boolean" parameterType="java.lang.Long">
+      select count(*) from tb_item_cat where parent_id = #{parentId}
+  </select>
 </mapper>
