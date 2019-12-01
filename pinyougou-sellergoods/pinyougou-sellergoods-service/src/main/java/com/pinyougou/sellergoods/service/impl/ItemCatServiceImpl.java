@@ -86,7 +86,6 @@ public class ItemCatServiceImpl implements ItemCatService {
         boolean parentIdIsNotNull = true;
         for (Long id : ids) {
             parentIdIsNotNull = findParentIdIsNotNull(id);
-            System.out.print(parentIdIsNotNull);
             if (parentIdIsNotNull) {
                 continue;
             }else {
