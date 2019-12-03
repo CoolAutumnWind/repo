@@ -153,7 +153,7 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
         );
     })
 
-    //模板ID选择后，更新模板对象
+    //模板ID选择后，更新模板对象，规格。
     $scope.$watch('entity.goods.typeTemplateId',function (newValue,oldValue) {
       typeTemplateService.findOne(newValue).success(
           function (response) {
