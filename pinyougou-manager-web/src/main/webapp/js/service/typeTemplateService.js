@@ -1,9 +1,9 @@
 //服务层
 app.service('typeTemplateService',function($http){
-	    	
+
 	//读取列表数据绑定到表单中
 	this.findAll=function(){
-		return $http.get('../typeTemplate/findAll.do');		
+		return $http.get('../typeTemplate/findAll.do');
 	}
 	//分页 
 	this.findPage=function(page,rows){
@@ -32,5 +32,10 @@ app.service('typeTemplateService',function($http){
 
 	this.selectOptionList=function () {
 		return $http.get('../typeTemplate/selectOptionList.do');
+	}
+
+	//返回规格列表
+	this.findSpecList=function (id) {
+		return $http.get('../typeTemplate/findSpecList.do?id='+id);
 	}
 });
