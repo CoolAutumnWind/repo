@@ -1,5 +1,6 @@
 package com.pinyougou.sellergoods.service.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,10 @@ import com.pinyougou.pojo.TbGoodsExample.Criteria;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
+import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.core.query.Query;
+import org.springframework.data.solr.core.query.SimpleQuery;
+import org.springframework.data.solr.core.query.SolrDataQuery;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -121,7 +126,7 @@ public class GoodsServiceImpl implements GoodsService {
         saveItemList(goods);    //添加新的sku列表数据
     }
 
-    private void saveItemList(Goods goods){
+    private void saveItemList(Goods goods) {
         if ("1".equals(goods.getGoods().getIsEnableSpec())) {
             for (TbItem item : goods.getItemList()) {
                 //商品KPU+规格描述串作为SKU名称
@@ -227,10 +232,22 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void updateStatus(Long[] ids, String status) {
-        for (long id : ids){
+        for (long id : ids) {
             TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
             tbGoods.setAuditStatus(status);
             goodsMapper.updateByPrimaryKey(tbGoods);
         }
     }
+
+    @Override
+    public List<TbItem> findItemListByGoodsIdandStatus(Long[] goodsIds, String status) {
+        TbItemExample example = new TbItemExample();
+        TbItemExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo(status);
+        criteria.andGoodsIdIn(Arrays.asList(goodsIds));
+        List<TbItem> items = itemMapper.selectByExample(example);
+        return items;
+    }
+
+
 }
