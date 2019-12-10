@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.pinyougou.mapper.TbTypeTemplateMapper;
+import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojo.TbTypeTemplate;
 import entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.pinyougou.pojo.TbItemCatExample.Criteria;
 import com.pinyougou.sellergoods.service.ItemCatService;
 
 import entity.PageResult;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -33,6 +35,9 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     @Autowired
     private TbTypeTemplateMapper typeTemplateMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 查询全部
@@ -128,6 +133,13 @@ public class ItemCatServiceImpl implements ItemCatService {
         Criteria criteria = example.createCriteria();
         criteria.andParentIdEqualTo(parentId);
         List<TbItemCat> ItemCats = itemCatMapper.selectByExample(example);
+
+        //每次执行查询的时候，一次性读取缓存进行存储 (因为每次增删改都要执行此方法)
+        List<TbItemCat> list = findAll();
+        for (TbItemCat itemCat : list){
+            redisTemplate.boundHashOps("itemCat").put(itemCat.getName(), itemCat.getTypeId());
+        }
+        System.out.println("更新缓存：商品分类表");
         return ItemCats;
     }
 
