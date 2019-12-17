@@ -7,6 +7,7 @@ import com.pinyougou.pojogroup.Cart;
 import entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import util.CookieUtil;
@@ -37,6 +38,7 @@ public class CartController {
     public List<Cart> findCartList() {
         //得到登陆人账号,判断当前是否有人登陆
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(username);
         String cartListString = CookieUtil.getCookieValue(request, "cartList", "UTF-8");
         if (cartListString == null || cartListString.equals("")) {
             cartListString = "[]";
@@ -67,9 +69,15 @@ public class CartController {
      * @return
      */
     @RequestMapping("/addGoodsToCartList")
+    @CrossOrigin(origins = "http://localhost:9105")//注解实现跨域,默认携带凭证allowCredentials="true"
     public Result addGoodsToCartList(Long itemId, Integer num) {
+
+        //response.setHeader("Access-Control-Allow-Origin", "http://localhost:9105");//跨域请求是否同意该域访问
+        //response.setHeader("Access-Control-Allow-Credentials", "true");//携带凭证不适用cookie可以不写
+
         //得到登陆人账号,判断当前是否有人登陆
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         try {
             //从Cookie中取出数据
             List<Cart> cartList = findCartList(); //获取列表
